@@ -7,24 +7,30 @@ import 'package:blofeeds/store/reducers/index.dart';
 import 'package:blofeeds/store/reducers/videoreducer.dart';
 import 'package:redux/redux.dart';
 import 'package:http/http.dart' as http;
+import 'dart:io';
 
 // 10.0.2.2
-final url = ' https://ds.bloverse.com/v2';
+final url = 'https://ds4.bloverse.com/v2';
 
 Future<void> loginUser(Store<AppState> store, payload, context) async{
   store.dispatch(SetCommonStateAction(CommonState(loadding: true)));
   try{
-    Map data = {'username':payload};
+    Map data = {'username': payload};
     var body = json.encode(data);
     final response = await http.post(
-        url+'/sign-in', 
+        Uri.parse(url+'/sign-in/'),
         body: body,
         headers: {'Content-Type': 'application/json; charset=utf-8'});
-    
+
     store.dispatch(SetCommonStateAction(CommonState(loadding: false)));
-    final jsonData = json.decode(response.body);
+    var jsonData;
+    if (response.body.isNotEmpty) {
+      jsonData = json.decode(response.body);
+    }
+
 
     if(response.statusCode == 200){
+      print('ok');
       navigatorKey.currentState.pushNamed('/feeds');
       await store.dispatch(SetAuthStateAction(AuthState(auth: jsonData['data'])));
       await store.dispatch(SetCommonStateAction(CommonState(expires: jsonData['data']['expires'])));
@@ -48,14 +54,17 @@ Future<void> signUpUser(Store<AppState> store, payload, context) async{
     Map data = {'username':payload};
     var body = json.encode(data);
     final response = await http.post(
-        url+'/sign-up', 
+        Uri.parse(url+'/sign-up/'),
         body: body,
         headers: {'Content-Type': 'application/json; charset=utf-8'});  
 
     store.dispatch(SetCommonStateAction(CommonState(loadding: false)));
-    final jsonData = json.decode(response.body);
+    var jsonData;
+    if (response.body.isNotEmpty) {
+      jsonData = json.decode(response.body);
+    }
     
-    if(response.statusCode == 200){
+    if(response.statusCode == 201){
       navigatorKey.currentState.pushNamed('/feeds');
       await store.dispatch(SetAuthStateAction(AuthState(auth: jsonData['data'])));
       await store.dispatch(SetCommonStateAction(CommonState(expires: jsonData['data']['expires'])));

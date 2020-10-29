@@ -6,6 +6,7 @@ import 'package:blofeeds/store/reducers/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'store/reducers/index.dart';
 
 void main() async{
   await Redux.init();
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return StoreProvider<AppState>(
-      store: Redux.store, 
+      store: Redux.store,
       child: MaterialApp(
         navigatorKey: navigatorKey,
         title: 'BloFeeds',

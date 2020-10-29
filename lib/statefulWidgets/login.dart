@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
+import '../store/reducers/index.dart';
+
 class Login extends StatefulWidget{
   @override
   _LoginState createState() => _LoginState();
@@ -24,14 +26,14 @@ class _LoginState extends State<Login>{
   }
 
   void _loginUser(){
-    Redux.store.dispatch(loginUser(Redux.store, this.username, widget));
+     Redux.store.dispatch(loginUser(Redux.store, this.username, widget));
   }
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     var state = StoreProvider.of<AppState>(context);
     return StoreConnector<AppState, AuthState>(
-      converter: (store)=>store.state.authState,
+      converter: (store) => store.state.authState,
       builder: (context, authState){
       return Center(
       child: Container(
@@ -97,7 +99,7 @@ class _LoginState extends State<Login>{
                           child: RaisedButton(
                             shape: RoundedRectangleBorder(side: BorderSide(color: Colors.transparent, width: 1), borderRadius: BorderRadius.circular(7)),
                             color: primarycolor,
-                            onPressed: () {_loginUser();},
+                            onPressed: _loginUser,
                             textColor: Colors.white,
                             padding: const EdgeInsets.all(18),
                             elevation: 1,

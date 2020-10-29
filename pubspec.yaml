@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_redux: ^0.7.0
+  redux: ^4.0.0+3
   redux_thunk: ^0.3.0
   http: ^0.12.2
   video_player: ^0.11.1+2
