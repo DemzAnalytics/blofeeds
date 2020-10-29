@@ -19,7 +19,7 @@ class _VideoPLayerState extends State<VideoPLayer> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network('https://www.youtube.com/watch?v=xSSa9LFneSEr')
+    _controller = VideoPlayerController.network(widget.url)
     ..initialize().then((_) {
         setState(() {});
       });
@@ -29,15 +29,17 @@ class _VideoPLayerState extends State<VideoPLayer> {
   }
 
   void _addToUserPreference(String userId, int catId, int numShown){
+    if(_controller.value.initialized){
+      print('========palying video========');
+      _controller.play();
+    }
     if(_controller.value.duration != null && _controller.value.duration >= Duration(seconds: 3)){
-        Redux.store.dispatch(setUserPreferenece(Redux.store, userId, catId, numShown));
+        // Redux.store.dispatch(setUserPreferenece(Redux.store, userId, catId, numShown));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    print('-------------duration-----------');
-    print(_controller.value.duration);
     return Scaffold(
         body: Center(
           child: Container(

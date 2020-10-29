@@ -28,11 +28,18 @@ class _ListItemState extends State<ListItem> {
   }
 
   _swapItems(){
+    int newIndex = index + 1;
+    int lenKeypoints = _keypoints.length;
+    print('--------index of item-------------');
+    print(index);
+    print(newIndex);
+    print(lenKeypoints);
+    print('--------index of item-------------');
     setState(() {
-      if(index == _keypoints.length){
+      if(newIndex == lenKeypoints){
         index = 0;
       }else{
-        index++;
+        index = newIndex;
       }
     });
   }
@@ -65,9 +72,6 @@ class _ListItemState extends State<ListItem> {
   @override
   Widget build(BuildContext context){
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-    print('--------index of item-------------');
-    print(index);
-    print('--------index of item-------------');
     return IndexedStack(
       index: index,
       children: _renderPoints()

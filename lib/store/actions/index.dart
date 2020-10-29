@@ -7,7 +7,6 @@ import 'package:blofeeds/store/reducers/index.dart';
 import 'package:blofeeds/store/reducers/videoreducer.dart';
 import 'package:redux/redux.dart';
 import 'package:http/http.dart' as http;
-import 'dart:io';
 
 // 10.0.2.2
 final url = 'https://ds4.bloverse.com/v2';
@@ -31,10 +30,11 @@ Future<void> loginUser(Store<AppState> store, payload, context) async{
 
     if(response.statusCode == 200){
       print('ok');
+      print( jsonData['data']['args'].runtimeType);
       navigatorKey.currentState.pushNamed('/feeds');
       await store.dispatch(SetAuthStateAction(AuthState(auth: jsonData['data'])));
       await store.dispatch(SetCommonStateAction(CommonState(expires: jsonData['data']['expires'])));
-      if(jsonData['data']['args'] == []){
+      if(jsonData['data']['args'].length == 0){
         await store.dispatch(getVideos(store, jsonData['data']['access_token'], 0));
       }else{
         await store.dispatch(getRecommendedCategory(store, jsonData['data']['access_token'], jsonData['data']['args']));
@@ -84,7 +84,7 @@ Future<void> getVideos(Store<AppState> store, String accessToken, int catId) asy
 
   try{
     final response = await http.get(
-        url+'/feeds?page='+ pageNo.toString() + '&cat_id=' + catId.toString(), 
+        Uri.parse(url+'/feeds?page='+ pageNo.toString() + '&cat_id=' + catId.toString()), 
         headers: {'Authorization': 'Bearer ' + accessToken, 'Keep-Alive': 'true'});
     
     store.dispatch(SetCommonStateAction(CommonState(loadding: false)));
@@ -109,7 +109,7 @@ Future<void> getRecommendedCategory(Store<AppState> store, String accessToken, M
   try{
     var body = json.encode(data);
     final response = await http.post(
-        url+'/personalize',
+        Uri.parse(url+'/personalize'),
         body: body,
         headers: {'Authorization': 'Bearer ' + accessToken});
     

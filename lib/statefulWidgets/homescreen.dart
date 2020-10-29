@@ -18,7 +18,6 @@ class _HomeScreenState extends State<HomeScreen>{
     return StoreConnector<AppState, VideosState>(
       converter: (store)=>store.state.videosState,
       builder: (context, videosState){
-        print(videosState.data);
       return Center(
         child: Container(
           color: Colors.white,
@@ -28,11 +27,13 @@ class _HomeScreenState extends State<HomeScreen>{
             itemBuilder: videosState.data.isEmpty?(BuildContext conter, int index){
               return Container();
             }: (BuildContext conter, int index){
-                if(videosState.data['articles'] == []){
-                  print('llllllllllll');
-                  return Container();
+                if(videosState.data['articles'].length == 0){
+                  return Container(
+                      alignment: Alignment.center,
+                      height: 50,
+                      child: CircularProgressIndicator(),
+                    );
                 }else{
-                  print(videosState.data['articles']);
                   return ListItem(
                     userId: state.state.authState.auth['username'],
                     headline: videosState.data['articles'][index]['subclip_urls']['Vertical']['headline'],
