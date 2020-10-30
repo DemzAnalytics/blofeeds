@@ -24,7 +24,6 @@ class AppState {
 AppState appReducer(AppState state, dynamic action) {
     if (action is SetAuthStateAction) {
       final nextAuthState = authReducer(state.authState, action);
-
       return state.copyWith(authState: nextAuthState);
     }else if(action is SetVideosStateAction){
       final nextVideosState = videosReducer(state.videosState, action);

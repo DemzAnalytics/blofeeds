@@ -1,4 +1,6 @@
+import 'package:blofeeds/main.dart';
 import 'package:blofeeds/statelessWidgets/listitem.dart';
+import 'package:blofeeds/statelessWidgets/videoplayer.dart';
 import 'package:blofeeds/store/reducers/index.dart';
 import 'package:blofeeds/store/reducers/videoreducer.dart';
 import 'package:flutter/material.dart';
@@ -21,25 +23,28 @@ class _HomeScreenState extends State<HomeScreen>{
       return Center(
         child: Container(
           color: Colors.white,
-          child: PageView.builder(
+          child: videosState.data.isEmpty?
+          Container(
+            alignment: Alignment.center,
+            height: MediaQuery.of(context).size.height,
+            color: primarycolor,
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white)
+            ),
+          ):
+           PageView.builder(
             scrollDirection: Axis.vertical,
             itemCount: videosState.data.isEmpty?0: videosState.data['articles'].length,
-            itemBuilder: videosState.data.isEmpty?(BuildContext conter, int index){
-              return Container();
-            }: (BuildContext conter, int index){
-                if(videosState.data['articles'].length == 0){
-                  return Container(
-                      alignment: Alignment.center,
-                      height: 50,
-                      child: CircularProgressIndicator(),
-                    );
-                }else{
-                  return ListItem(
+            itemBuilder:(BuildContext conter, int index){
+                  List keypoint = videosState.data['articles'][index]['subclip_urls']['Vertical']['keypoints'];
+                  String headline = videosState.data['articles'][index]['subclip_urls']['Vertical']['headline'];
+                  keypoint.insert(0, headline);
+                  return VideoPLayer(
                     userId: state.state.authState.auth['username'],
-                    headline: videosState.data['articles'][index]['subclip_urls']['Vertical']['headline'],
-                    keypoint: videosState.data['articles'][index]['subclip_urls']['Vertical']['keypoints'],
+                    keypoint: keypoint,
+                    numShown: index+1,
+                    catId: videosState.data['articles'][index]['Category'],
                   );
-                }
               }
             ),
         ),

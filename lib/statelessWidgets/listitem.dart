@@ -51,11 +51,11 @@ class _ListItemState extends State<ListItem> {
         var item = _keypoints[i];
         points.add(
             GestureDetector(
-              child: VideoPLayer(
-                url: item,
-                userId: widget.userId,
-                numShown: i+1,
-              ),
+              // child: VideoPLayer(
+              //   url: item,
+              //   userId: widget.userId,
+              //   numShown: i+1,
+              // ),
               onTap: (){
                 if(_keypoints != null){
                   _swapItems();
@@ -74,7 +74,8 @@ class _ListItemState extends State<ListItem> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return IndexedStack(
       index: index,
-      children: _renderPoints()
+      children: _renderPoints(),
+      sizing: StackFit.expand,
     );  
   }
 

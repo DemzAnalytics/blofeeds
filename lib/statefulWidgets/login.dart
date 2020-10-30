@@ -103,7 +103,14 @@ class _LoginState extends State<Login>{
                             textColor: Colors.white,
                             padding: const EdgeInsets.all(18),
                             elevation: 1,
-                            child: Text(
+                            child: state.state.commonState.loadding?
+                            Container(
+                                alignment: Alignment.center,
+                                height: 20,
+                                width: 40,
+                                child: CircularProgressIndicator(),
+                              ):
+                             Text(
                               'Login',
                               textAlign: TextAlign.center,
                               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)
