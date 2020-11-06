@@ -1,6 +1,7 @@
 import 'package:blofeeds/statefulWidgets/login.dart';
 import 'package:blofeeds/statefulWidgets/signup.dart';
 import 'package:blofeeds/statefulWidgets/homescreen.dart';
+import 'package:blofeeds/statefulWidgets/splashScreen.dart';
 import 'package:blofeeds/store/index.dart';
 import 'package:blofeeds/store/reducers/index.dart';
 import 'package:flutter/material.dart';
@@ -29,8 +30,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         navigatorKey: navigatorKey,
         title: 'BloFeeds',
-        initialRoute: '/login',
+        initialRoute: '/',
         routes: {
+          '/': (context) => SplashScreen(),
           '/login': (context) => Login(),
           '/signup': (context) => SignUp(),
           '/feeds': (context) => HomeScreen()

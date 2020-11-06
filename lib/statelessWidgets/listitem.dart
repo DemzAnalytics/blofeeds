@@ -1,4 +1,3 @@
-import 'package:blofeeds/statelessWidgets/videoplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -48,7 +47,7 @@ class _ListItemState extends State<ListItem> {
     List<Widget> points = [];
     if(_keypoints != null){
       for (var i =0; i< _keypoints.length; i++) {
-        var item = _keypoints[i];
+        // var item = _keypoints[i];
         points.add(
             GestureDetector(
               // child: VideoPLayer(

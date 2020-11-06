@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:blofeeds/store/actions/index.dart';
 import 'package:blofeeds/store/index.dart';
 import 'package:video_player/video_player.dart';
@@ -17,25 +18,31 @@ class _VideoPLayerState extends State<VideoPLayer> {
   VideoPlayerController _controller;
   int index;
   bool init = false;
+  Duration videoDuration;
 
   @override
   void initState() {
     super.initState();
     index = 0;
-    _controller = VideoPlayerController.network(widget.keypoint[0])
+    _controller = VideoPlayerController.network('http://10.0.2.2:9000/v1/static/w401t8fo3vyytmaepxcj/w401t8fo3vyytmaepxcj.mpd', formatHint: VideoFormat.dash)
     ..initialize().then((_) {
         setState(() {
           init = true;
+          videoDuration = _controller.value.duration;
         });
+        if(index ==0){setTimer();}
       });
     _controller.play();
     
   }
 
-  void _addToUserPreference(String userId, int catId, int numShown){
-    if(_controller.value.duration != null && _controller.value.duration >= Duration(seconds: 3)){
-        Redux.store.dispatch(setUserPreferenece(Redux.store, userId, catId, numShown));
-    }
+  void setTimer(){
+    Duration duration = videoDuration * 0.66;
+    Timer(duration, _addToUserPreference);
+  }
+
+  _addToUserPreference(){
+    Redux.store.dispatch(setUserPreferenece(Redux.store, widget.userId, widget.catId, widget.numShown));
   }
 
     _swapItems(){
@@ -47,9 +54,12 @@ class _VideoPLayerState extends State<VideoPLayer> {
     if(newIndex == lenKeypoints){
       setState(() {
         init = true;
+        index = 0;
       });
     }else{
-      index = newIndex;
+      setState(() {
+        index = newIndex;
+      });
       _controller = VideoPlayerController.network(widget.keypoint[newIndex])        
         ..initialize().then((_) {
           setState(() {

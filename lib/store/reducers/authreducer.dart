@@ -1,18 +1,20 @@
 import 'package:blofeeds/store/actions/actionType.dart';
-import 'package:blofeeds/store/reducers/commonreducer.dart';
 
 class AuthState{
   Map auth;
+  Map userPref;
 
-  AuthState({this.auth});
+  AuthState({this.auth, this.userPref});
 
   factory AuthState.initial()=>AuthState(
     auth: {},
+    userPref: {}
   );
 
-  AuthState copyWith({Map auth, CommonState common}){
+  AuthState copyWith({Map auth, Map userPref}){
     return AuthState(
       auth: auth ?? this.auth,
+      userPref: userPref ?? this.userPref
     );
   }
 }
@@ -20,6 +22,7 @@ class AuthState{
 authReducer(AuthState state, SetAuthStateAction action){
   final payload = action.authState;
   return state.copyWith(
-    auth:payload.auth, 
+    auth:payload.auth,
+    userPref: payload.userPref 
   );
 }

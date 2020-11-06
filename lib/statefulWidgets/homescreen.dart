@@ -1,6 +1,5 @@
 import 'package:blofeeds/main.dart';
-import 'package:blofeeds/statelessWidgets/listitem.dart';
-import 'package:blofeeds/statelessWidgets/videoplayer.dart';
+import 'package:blofeeds/statelessWidgets/videosplayer.dart';
 import 'package:blofeeds/store/reducers/index.dart';
 import 'package:blofeeds/store/reducers/videoreducer.dart';
 import 'package:flutter/material.dart';
@@ -32,21 +31,24 @@ class _HomeScreenState extends State<HomeScreen>{
               valueColor: AlwaysStoppedAnimation<Color>(Colors.white)
             ),
           ):
-           PageView.builder(
+           ListView.builder(
             scrollDirection: Axis.vertical,
             itemCount: videosState.data.isEmpty?0: videosState.data['articles'].length,
             itemBuilder:(BuildContext conter, int index){
-                  List keypoint = videosState.data['articles'][index]['subclip_urls']['Vertical']['keypoints'];
-                  String headline = videosState.data['articles'][index]['subclip_urls']['Vertical']['headline'];
-                  keypoint.insert(0, headline);
-                  return VideoPLayer(
-                    userId: state.state.authState.auth['username'],
-                    keypoint: keypoint,
-                    numShown: index+1,
-                    catId: videosState.data['articles'][index]['Category'],
-                  );
-              }
-            ),
+              List keypoint = videosState.data['articles'][index]['subclip_urls']['Vertical']['keypoints'];
+              String headline = videosState.data['articles'][index]['subclip_urls']['Vertical']['headline'];
+              keypoint.insert(0, headline);
+              return Container(
+                height: MediaQuery.of(context).size.height,
+                child: VideosPlayer(
+                  userId: state.state.authState.auth['username'],
+                  keypoint: keypoint,
+                  numShown: index+1,
+                  catId: videosState.data['articles'][index]['Category'],
+                )
+              );
+            }
+          ),
         ),
       );
       }
