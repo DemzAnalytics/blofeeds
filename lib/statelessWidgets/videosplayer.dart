@@ -37,7 +37,7 @@ class _VideosPlayerState extends State<VideosPlayer> {
       var finalUrl = url+'/video-to-dash' +'/'+actualURl+'/'+actualURl+'.mpd';
       print(finalUrl);
       VideoPlayerController _controller;
-      _controller = VideoPlayerController.network(finalUrl, formatHint: VideoFormat.dash)
+      _controller = VideoPlayerController.network(video)
       ..initialize().then((_) {
         print('========initialized video========');
         if(index == 0){

@@ -10,8 +10,8 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 // 10.0.2.2
-// final url = 'https://ds4.bloverse.com/v2';
-final url = 'http://10.0.2.2:9000/v2';
+final url = 'https://ds4.bloverse.com/v2';
+// final url = 'http://10.0.2.2:9000/v2';
 
 Future<void> loginUser(Store<AppState> store, payload, context) async{
   store.dispatch(SetCommonStateAction(CommonState(loadding: true)));
