@@ -27,19 +27,29 @@ class _HomeScreenState extends State<HomeScreen>{
             alignment: Alignment.center,
             height: MediaQuery.of(context).size.height,
             color: primarycolor,
-            child: CircularProgressIndicator(
+            child: state.state.commonState.loadding? 
+            CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.white)
-            ),
+            ): Container(
+
+            )
           ):
            ListView.builder(
             scrollDirection: Axis.vertical,
             itemCount: videosState.data.isEmpty?0: videosState.data['articles'].length,
-            itemBuilder:(BuildContext conter, int index){
-              List keypoint = videosState.data['articles'][index]['subclip_urls']['Vertical']['keypoints'];
-              String headline = videosState.data['articles'][index]['subclip_urls']['Vertical']['headline'];
-              keypoint.insert(0, headline);
+            // controller: ScrollController(initialScrollOffset: 0.5),
+            itemBuilder: videosState.data.isEmpty?
+            (BuildContext context){
+              return Center(
+                child: Container(
+                  child: Text(
+                  'Empty'
+                )),
+              );
+            }:
+            (BuildContext context, int index){
+              Map keypoint = videosState.data['articles'][index]['subclip_urls'];
               return Container(
-                height: MediaQuery.of(context).size.height,
                 child: VideosPlayer(
                   userId: state.state.authState.auth['username'],
                   keypoint: keypoint,

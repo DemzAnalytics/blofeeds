@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:blofeeds/main.dart';
 import 'package:blofeeds/store/actions/index.dart';
 import 'package:blofeeds/store/index.dart';
 import 'package:video_player/video_player.dart';
@@ -9,7 +10,7 @@ class VideosPlayer extends StatefulWidget {
   final String userId;
   final int catId;
   final int numShown;
-  final List keypoint;
+  final Map keypoint;
   @override
   _VideosPlayerState createState() => _VideosPlayerState();
 }
@@ -31,17 +32,18 @@ class _VideosPlayerState extends State<VideosPlayer> {
   _initializeVideos(){
     print('======initializing video=======');
     _controllerList = [];
-    for(var video in widget.keypoint){
+    widget.keypoint.forEach((key, video) { 
+      print('======video====');
+      print(video);
       var videoUrl = video.split('/').last;
       var actualURl = videoUrl.split('.')[0];
       var finalUrl = url+'/video-to-dash' +'/'+actualURl+'/'+actualURl+'.mpd';
       print(finalUrl);
       VideoPlayerController _controller;
-      _controller = VideoPlayerController.network(video)
+      _controller = VideoPlayerController.network(finalUrl)
       ..initialize().then((_) {
         print('========initialized video========');
         if(index == 0){
-          _controller.setLooping(true);
           setState(() {
             init = true;
             videoDuration = _controller.value.duration;
@@ -54,7 +56,8 @@ class _VideosPlayerState extends State<VideosPlayer> {
         }
       _controllerList.add(_controller);
       });
-    }
+    
+    });
   }
 
   void setTimer(){
@@ -93,8 +96,9 @@ class _VideosPlayerState extends State<VideosPlayer> {
     if(index == 0 && _controllerList.length != 0){
       _controllerList[index].play();
     }
-    return Center(
-          child: Container(
+    return 
+          Container(
+            color: primarycolor,
             height: MediaQuery.of(context).size.height,
             child: init?
               GestureDetector(
@@ -112,7 +116,7 @@ class _VideosPlayerState extends State<VideosPlayer> {
                 child: 
                   CircularProgressIndicator(),
               ),
-          ),
+          
     );
   }
 

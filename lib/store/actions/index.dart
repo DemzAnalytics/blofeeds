@@ -98,6 +98,7 @@ Future<void> getVideos(Store<AppState> store, String accessToken, int catId) asy
 
     if(response.statusCode == 200){
       print('======got here======');
+      print(jsonData);
       await store.dispatch(SetVideosStateAction(VideosState(page: pageNo+1, data: jsonData['data'])));
     }else{
       store.dispatch(SetCommonStateAction(CommonState(error: 'error')));
