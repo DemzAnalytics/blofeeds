@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
     return StoreProvider<AppState>(
       store: Redux.store,
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         navigatorKey: navigatorKey,
         title: 'BloFeeds',
         initialRoute: '/',
