@@ -24,15 +24,7 @@ class _VideoPLayerState extends State<VideoPLayer> {
   void initState() {
     super.initState();
     index = 0;
-    _controller = VideoPlayerController.network('http://10.0.2.2:9000/v1/static/w401t8fo3vyytmaepxcj/w401t8fo3vyytmaepxcj.mpd', formatHint: VideoFormat.dash)
-    ..initialize().then((_) {
-        setState(() {
-          init = true;
-          videoDuration = _controller.value.duration;
-        });
-        if(index ==0){setTimer();}
-      });
-    _controller.play();
+    startIt();
     
   }
 
@@ -56,17 +48,11 @@ class _VideoPLayerState extends State<VideoPLayer> {
         init = true;
         index = 0;
       });
-    }else{
-      setState(() {
+    }else {
+      setState(()  {
         index = newIndex;
       });
-      _controller = VideoPlayerController.network(widget.keypoint[newIndex])        
-        ..initialize().then((_) {
-          setState(() {
-            init = true;
-          });
-        _controller.play();
-      });
+      startIt2(widget.keypoint[newIndex]);
     }
   }
 
@@ -98,5 +84,27 @@ class _VideoPLayerState extends State<VideoPLayer> {
   void dispose() {
     super.dispose();
     _controller.dispose();
+  }
+
+  void startIt() async{
+    _controller = VideoPlayerController.network('http://10.0.2.2:9000/v1/static/w401t8fo3vyytmaepxcj/w401t8fo3vyytmaepxcj.mpd', formatHint: VideoFormat.dash);
+      await _controller.initialize().then((_) {
+        setState(() {
+          init = true;
+          videoDuration = _controller.value.duration;
+        });
+        if(index ==0){setTimer();}
+      });
+    _controller.play();
+  }
+
+void startIt2(keypoint) async {
+  _controller = VideoPlayerController.network(keypoint);
+    await _controller.initialize().then((_) {
+      setState(() {
+        init = true;
+      });
+      _controller.play();
+    });
   }
 }

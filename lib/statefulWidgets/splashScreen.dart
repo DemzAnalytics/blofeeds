@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen>{
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3), _pushScreen);
+    Timer(Duration(seconds: 1), _pushScreen);
   }
 
   void _pushScreen() async{

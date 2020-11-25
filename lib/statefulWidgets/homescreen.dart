@@ -5,6 +5,9 @@ import 'package:blofeeds/store/reducers/videoreducer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:video_player/video_player.dart';
+
+import '../statelessWidgets/videoplayer.dart';
 
 class HomeScreen extends StatefulWidget{
   @override
@@ -33,32 +36,59 @@ class _HomeScreenState extends State<HomeScreen>{
             ): Container(
 
             )
-          ):
-           ListView.builder(
+          ): PageView.builder(
             scrollDirection: Axis.vertical,
             itemCount: videosState.data.isEmpty?0: videosState.data['articles'].length,
-            // controller: ScrollController(initialScrollOffset: 0.5),
+            controller: PageController(initialPage: 0, keepPage: true, viewportFraction: 1),
             itemBuilder: videosState.data.isEmpty?
-            (BuildContext context){
-              return Center(
-                child: Container(
-                  child: Text(
-                  'Empty'
-                )),
-              );
-            }:
-            (BuildContext context, int index){
-              Map keypoint = videosState.data['articles'][index]['subclip_urls'];
-              return Container(
-                child: VideosPlayer(
-                  userId: state.state.authState.auth['username'],
-                  keypoint: keypoint,
-                  numShown: index+1,
-                  catId: videosState.data['articles'][index]['Category'],
-                )
-              );
-            }
+              (BuildContext context){
+                return Center(
+                  child: Container(
+                    child: Text(
+                    'Empty'
+                  )),
+                );
+              }:
+              (BuildContext context, int index){
+                Map keypoint = videosState.data['articles'][index]['subclip_urls'];
+                return Container(
+                  child: VideosPlayer(
+                    userId: state.state.authState.auth['username'],
+                    keypoint: keypoint,
+                    numShown: index+1,
+                    catId: videosState.data['articles'][index]['Category'],
+                  )
+                );
+              }
           ),
+
+          //  ListView.builder(
+          //   scrollDirection: Axis.vertical,
+          //   itemCount: videosState.data.isEmpty?0: videosState.data['articles'].length,
+          //   // controller: ScrollController(initialScrollOffset: 0.5),
+          //   itemBuilder: videosState.data.isEmpty?
+          //   (BuildContext context){
+          //     return Center(
+          //       child: Container(
+          //         child: Text(
+          //         'Empty'
+          //       )),
+          //     );
+          //   }:
+          //   (BuildContext context, int index){
+          //     Map keypoint = videosState.data['articles'][index]['subclip_urls'];
+          //     return Container(
+          //       child: VideosPlayer(
+          //         userId: state.state.authState.auth['username'],
+          //         keypoint: keypoint,
+          //         numShown: index+1,
+          //         catId: videosState.data['articles'][index]['Category'],
+          //       )
+          //     );
+          //   }
+          // ),
+
+
         ),
       );
       }
